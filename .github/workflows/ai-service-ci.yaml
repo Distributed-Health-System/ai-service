@@ -7,12 +7,12 @@ on:
     branches:
       - main
     paths:
-      - "ai-service/**"
+      - 'ai-service/**'
   pull_request:
     branches:
       - main
     paths:
-      - "ai-service/**"
+      - 'ai-service/**'
 
 jobs:
   build:
