@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+coverage
+
+# Environment & secrets
+.env
+.env.*
+
+# Tests
+test
+
+# Tooling & repo metadata
+.git
+.gitignore
+.github
+.vscode
+.idea
+.dockerignore
+
+# Logs & OS cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Docs and local-only files
+README.md
