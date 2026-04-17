@@ -27,7 +27,9 @@ export class SymptomCheckerService {
     patientId: string,
     dto: ChatSymptomDto,
   ): Promise<ChatSymptomResponseDto> {
-    this.logger.log(`Patient ${patientId} | Session ${dto.sessionId}: "${dto.message}"`);
+    this.logger.log(
+      `Patient ${patientId} | Session ${dto.sessionId}: "${dto.message}"`,
+    );
 
     // Memory → DB → new session
     let session = this.sessions.get(dto.sessionId);
@@ -66,12 +68,13 @@ export class SymptomCheckerService {
     };
   }
 
-  async getPatientSessions(patientId: string): Promise<ChatSymptomResponseDto[]> {
+  async getPatientSessions(
+    patientId: string,
+  ): Promise<ChatSymptomResponseDto[]> {
     const sessions = await this.sessionRepository.findByPatientId(patientId);
     return sessions.map((session) => ({
       sessionId: session.id,
-      response:
-        session.getMessages().at(-1)?.content ?? '',
+      response: session.getMessages().at(-1)?.content ?? '',
       conversation: session.getMessages().map((m) => ({
         role: m.role,
         content: m.content,
@@ -80,10 +83,14 @@ export class SymptomCheckerService {
     }));
   }
 
-  async getSession(patientId: string, sessionId: string): Promise<ChatSymptomResponseDto | null> {
+  async getSession(
+    patientId: string,
+    sessionId: string,
+  ): Promise<ChatSymptomResponseDto | null> {
     let session = this.sessions.get(sessionId);
     if (!session) {
-      session = await this.sessionRepository.findBySessionId(sessionId) ?? undefined;
+      session =
+        (await this.sessionRepository.findBySessionId(sessionId)) ?? undefined;
     }
     if (!session || session.patientId !== patientId) return null;
 
@@ -99,7 +106,9 @@ export class SymptomCheckerService {
   }
 
   private async runAnalysis(session: SymptomSession): Promise<string> {
-    const analysis = await this.analyzeSymptomsUseCase.execute(session.getContext());
+    const analysis = await this.analyzeSymptomsUseCase.execute(
+      session.getContext(),
+    );
     session.setAnalysis(analysis);
 
     const urgencyMessages: Record<string, string> = {

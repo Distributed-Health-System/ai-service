@@ -51,7 +51,10 @@ export class SymptomCheckerController {
   ): Promise<ChatSymptomResponseDto> {
     const patientId = req['userId'] as string;
     if (!patientId) throw new UnauthorizedException();
-    const session = await this.symptomCheckerService.getSession(patientId, sessionId);
+    const session = await this.symptomCheckerService.getSession(
+      patientId,
+      sessionId,
+    );
     if (!session) throw new UnauthorizedException('Session not found');
     return session;
   }
